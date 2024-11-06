@@ -1,0 +1,44 @@
+@startgantt gantt
+!theme mars
+saturday are closed
+sunday are closed
+
+Project starts the 1st of november 2024
+
+
+2024-11-06 is colored in salmon 
+[Review committe] happens 2024-11-06
+
+2025-02-18 is colored in salmon 
+[Delivery committe] happens 2025-02-18
+
+[Define backend sequential diagram] starts 2024-11-13 and requires 1 days
+
+[Check databases availability] starts 2024-11-13 and requires 3 days
+[Start databases fetching functions] lasts 10 days
+[Check databases availability] -> [Start databases fetching functions]
+[Design computation functions] lasts 10 days
+[Check databases availability] -> [Design computation functions]
+[Define directions functions] lasts 5 days
+[Design computation functions] -> [Define directions functions]
+
+
+[Define the user input function] starts 2024-12-09 and requires 2 days
+
+[Define frontend sequential diagram] starts 2024-12-01 and requires 3 days
+[Define user interface (input side)] lasts 3 days
+[Define frontend sequential diagram] -> [Define user interface (input side)]
+[Define user interface (direction function outputs)] lasts 3 days
+[Define frontend sequential diagram] -> [Define user interface (direction function outputs)]
+
+[Define communication between frontend and backend] requires 5 days
+[Define user interface (direction function outputs)] -> [Define communication between frontend and backend]
+
+[Define mapping functions] starts 2025-01-03 and requires 10 days
+[Define plotting functions] lasts 7 days
+[Define mapping functions] -> [Define plotting functions]
+[Define appearance and accessibility] lasts 5 days
+[Define plotting functions] -> [Define appearance and accessibility]
+[Define user login] lasts 7 days
+[Define plotting functions] -> [Define user login]
+@endgantt
