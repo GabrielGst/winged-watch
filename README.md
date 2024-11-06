@@ -29,13 +29,13 @@ The goal of the app is to computes an optimal course for a sailing boat accordin
 
 The vizualization side will be designed later on. For the computation side, a first component diagram has been designed to illustrate how the app will respond to the specifications 2, 3, 4, 5, 7 (see below).
 
-![alt text](image-4.png)
+![alt text](./design/Pictures/app.svg)
 
 ## Work program
 
 The estimate work program is presented below. It needs to be revised regularly.
 
-![alt text](image-3.png)
+![alt text](./design/Pictures/gantt.svg)
 
 ## Testing
 
