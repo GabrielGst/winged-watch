@@ -2,6 +2,10 @@
 .venv
 .conda
 
+# Databases files
+.grib2
+.xlsx
+
 # Logs
 logs
 *.log
