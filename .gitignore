@@ -1,3 +1,7 @@
+# python environments
+.venv
+.conda
+
 # Logs
 logs
 *.log
