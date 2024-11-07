@@ -13,9 +13,10 @@ The application will work from data provided by
 3) for ocean currents : AROME model from meteo-france <https://meteo.data.gouv.fr/datasets/65bd19226c4e3fcbf4948f99> (to check)
 4) for tidal heightd : AROME model from meteo-france <https://meteo.data.gouv.fr/datasets/65bd17b9775b5222832d67a4>
 
-The goal of the app is to computes an optimal course for a sailing boat according to natural constraints (wind, tidal and ocean currents) and based on navigation rules.
 
 ## Specs
+
+The goal of the app is to computes an optimal course for a sailing boat according to natural constraints (wind, tidal and ocean currents) and based on navigation rules.
 
 1) the app should use (and show) the bathymetric map at different scales,
 2) the app should use (and show) the wind forecast,
