@@ -1,7 +1,7 @@
 import xarray as xr
 
 # Load the .grib2 file as an xarray dataset
-ds = xr.open_dataset(".bdd/arome", engine="cfgrib")
+ds = xr.open_dataset("./bdd/arome__001__HP1__00H__2024-11-07T09_00_00Z.grib2", engine="cfgrib")
 
 # Print the dataset structure and contents
 print(ds)
