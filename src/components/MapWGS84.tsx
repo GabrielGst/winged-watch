@@ -1,4 +1,5 @@
 // https://openlayers.org/en/latest/examples/reprojection-wgs84.html
+// https://openlayers.org/en/latest/examples/wind-arrows.html
 
 'use client';
 
@@ -42,7 +43,7 @@ const MapWGS84 = ({ setMapObject }: { setMapObject: (map: Map | undefined) => vo
   
 
   return (
-    <div ref={mapContainer} className="w-full h-96"></div>
+    <div ref={mapContainer} className="w-full h-full"></div>
   );
 };
 
