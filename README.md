@@ -1,47 +1,36 @@
-# winged-watch
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-Computes the best sailing course for a sail boat according to winds, ocean currents and the boat's draft.
+## Getting Started
 
-This project is led by Gabriel Gostiaux, student in engineering at Institut of Optics in Palaiseau, FRANCE.
+First, run the development server:
 
-## Description
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-The application will work from data provided by
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-1) for bathymetric data : GEBCO <https://www.gebco.net/data_and_products/>
-2) for wind predictions : AROME model from meteo-france <https://meteo.data.gouv.fr/datasets/65bd1247a6238f16e864fa80>
-3) for ocean currents : AROME model from meteo-france <https://meteo.data.gouv.fr/datasets/65bd19226c4e3fcbf4948f99> (to check)
-4) for tidal heightd : AROME model from meteo-france <https://meteo.data.gouv.fr/datasets/65bd17b9775b5222832d67a4>
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Specs
+## Learn More
 
-The goal of the app is to computes an optimal course for a sailing boat according to natural constraints (wind, tidal and ocean currents) and based on navigation rules.
+To learn more about Next.js, take a look at the following resources:
 
-1) the app should use (and show) the bathymetric map at different scales,
-2) the app should use (and show) the wind forecast,
-3) the app should use (and show) the ocean currents forecast,
-4) the app should use (and show) the tidal heights forecast,
-5) the app should use (and show) basics marine beacons,
-6) the app should computes (and show) the optimal sailing course,
-7) the app should provide a list of timed directions to follow the computed course.
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-## Conception
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-The vizualization side will be designed later on. For the computation side, a first component diagram has been designed to illustrate how the app will respond to the specifications 2, 3, 4, 5, 7 (see below).
+## Deploy on Vercel
 
-![alt text](./design/Pictures/app.svg)
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-## Work program
-
-The estimate work program is presented below. It needs to be revised regularly.
-
-![alt text](./design/Pictures/gantt.svg)
-
-## Testing
-
-Testing of fetching functions will include integrity testing through data occurency checking with the source.
-Testing of computation will be compared with analytical computation.
-Testing of communication between frontend and backend will be designed with simple messages and print functions.
-Timed directions will be confronted with the plotted optimal course.
-Tidal heights, ocean currents and wind forecast can be confronted with classic analytic maps, observation and official forecast at reference harbors, and direct computation.
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
