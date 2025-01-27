@@ -19,6 +19,9 @@ import VectorLayer from 'ol/layer/Vector.js';
 import VectorSource from 'ol/source/Vector.js';
 import {Fill, RegularShape, Stroke, Style} from 'ol/style.js';
 import {fromLonLat} from 'ol/proj.js';
+import { Geometry } from 'ol/geom';
+
+
 
 const shaft = new RegularShape({
   points: 2,
@@ -45,55 +48,6 @@ const source = new VectorSource({
   attributions:
     'Weather data by ecmwf',
 });
-
-const map = new Map({
-  layers: [
-    new TileLayer({
-      source: new OSM(),
-    }),
-    new VectorLayer({
-      source: source,
-      style: function (feature) {
-        const wind = feature.get('wind');
-        // rotate arrow away from wind origin
-        const angle = ((wind.deg - 180) * Math.PI) / 180;
-        const scale = wind.speed / 10;
-        shaft.setScale([1, scale]);
-        shaft.setRotation(angle);
-        head.setDisplacement([
-          0,
-          head.getRadius() / 2 + shaft.getRadius() * scale,
-        ]);
-        head.setRotation(angle);
-        return styles;
-      },
-    }),
-  ],
-  target: 'map',
-  view: new View({
-    center: [0, 0],
-    zoom: 2,
-  }),
-});
-
-// fetch('../api/data.json')
-//   .then(function (response) {
-//     return response.json();
-//   })
-//   .then(function (data) {
-//     const features = [];
-//     data.list.forEach(function (report) {
-//       const feature = new Feature(
-//         new Point(fromLonLat([report.coord.lon, report.coord.lat])),
-//       );
-//       feature.setProperties(report);
-//       features.push(feature);
-//     });
-//     source.addFeatures(features);
-//     map.getView().fit(source.getExtent());
-//   });
-
-
 
 
 
@@ -132,6 +86,25 @@ const MapWGS84 = ({ setMapObject }: { setMapObject: (map: Map | undefined) => vo
         zoom: 2,
       }),
     });
+
+    const windDataFetch = () => {
+      fetch('./output.json')
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          const features: Feature<Geometry>[] = [];
+          data.list.forEach(function (report: { [x: string]: any; coord?: any; }) {
+            const feature = new Feature(
+              new Point(fromLonLat([report.lon, report.lat])),
+            );
+            feature.setProperties(report);
+            features.push(feature);
+          });
+          source.addFeatures(features);
+          map.getView().fit(source.getExtent());
+        });
+      };
 
     if (mapContainer.current) {
       map.setTarget(mapContainer.current);
