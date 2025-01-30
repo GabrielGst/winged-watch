@@ -4,6 +4,8 @@
 from ecmwf.opendata import Client
 import xarray as xr
 import xarray_extras as xrx
+import os
+import shutil
 
 def retrieve_forecast(parameters, filename):
     
@@ -35,20 +37,37 @@ def retrieve_forecast(parameters, filename):
         target = filename,
     )
     
+        # Create the dataset directory if it doesn't exist
+    dataset_dir = "./dataset/"
+    
+    if not os.path.exists(dataset_dir):
+        os.makedirs(dataset_dir)
+
+    # Move the file to the dataset directory
+    destination = os.path.join(dataset_dir, filename)
+    
+    if os.path.exists(filename):
+        shutil.move(filename, destination)
+        filename = destination
+    
     print(f"Forecast downloaded : {result}")
     
-def process_forecast(filename):
+def process_forecast(filename, export=False):
     ds = xr.open_dataset(filename, engine="cfgrib", decode_times=False) # To avoid datetime incompatibility use decode_times=False kwarg in xarray.open_dataset
     u10 = ds["u10"]
     v10 = ds["v10"]
     
-    udf = u10.to_dataframe()
-    vdf = v10.to_dataframe()
+    print(u10.keys())
+    print(u10.head())
     
-    udf.to_json("u10.json")
-    vdf.to_json("v10.json")
+    if export:
+        udf = u10.to_dataframe()
+        vdf = v10.to_dataframe()
+        
+        udf.to_json("u10.json")
+        vdf.to_json("v10.json")
     
-    udf.head(10)
+        udf.head(10)
     
 
     
@@ -58,7 +77,7 @@ def main():
     parameters = ['msl', '10u', '10v']
     filename = 'medium-wind-10m.grib'
     
-    # retrieve_forecast(parameters, filename)
+    retrieve_forecast(parameters, filename)
     
     process_forecast(filename)
 
