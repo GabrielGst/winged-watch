@@ -44,16 +44,54 @@ const head = new RegularShape({
 
 const styles = [new Style({image: shaft}), new Style({image: head})];
 
-const source = new VectorSource({
-  attributions:
-    'Weather data by ecmwf',
-});
+// const source = new VectorSource({
+//   attributions:
+//     'Weather data by ecmwf',
+// });
+
+
+// This function gets called at build time on server-side.
+// It won't be called on client-side, so you can even do
+// direct database queries.
+export async function getStaticProps() {
+  const source = new VectorSource({
+    attributions:
+      'Weather data by ecmwf',
+  });
+
+  // Call an external API endpoint to get posts.
+  // You can use any data fetching library
+  const res = await fetch('./api/dataset/wind.json')
+  const posts = await res.json()
+  // console.log("lol")
+  const features: Feature<Geometry>[] = [];
+
+  posts.forEach(function (report: { [x: string]: any; coord?: any; }) { // data.list
+    const feature = new Feature(
+      new Point(fromLonLat([report.longitude, report.latitude])),
+    );
+    feature.setProperties(report);
+    features.push(feature);
+  });
+
+  source.addFeatures(features);
+  // console.log(source.getExtent())
+ 
+  // By returning { props: { posts } }, the Blog component
+  // will receive `posts` as a prop at build time
+  return {
+    props: {
+      source,
+    },
+  }
+}
 
 
 
-
-const MapWGS84 = ({ setMapObject }: { setMapObject: (map: Map | undefined) => void }) => {
+const MapWGS84 = ({ setMapObject, source }: { setMapObject: (map: Map | undefined) => void, source: VectorSource }) => {
   const mapContainer = useRef<HTMLDivElement | null>(null);
+
+
   // on component mount create the map and set the map references to the state
   useEffect(() => {
     const map = new Map({
@@ -64,10 +102,12 @@ const MapWGS84 = ({ setMapObject }: { setMapObject: (map: Map | undefined) => vo
         new VectorLayer({
           source: source,
           style: function (feature) {
-            const wind = feature.get('wind');
+            // const wind = feature.get('wind');
             // rotate arrow away from wind origin
-            const angle = ((wind.deg - 180) * Math.PI) / 180;
-            const scale = wind.speed / 10;
+            // const angle = ((wind.deg - 180) * Math.PI) / 180;
+            // const scale = wind.speed / 10;
+            const angle = feature.get("deg")
+            const scale = feature.get("speed") / 10
             shaft.setScale([1, scale]);
             shaft.setRotation(angle);
             head.setDisplacement([
@@ -87,30 +127,31 @@ const MapWGS84 = ({ setMapObject }: { setMapObject: (map: Map | undefined) => vo
       }),
     });
 
-    const windDataFetch = () => {
-      fetch('./output.json')
-        .then(function (response) {
-          return response.json();
-        })
-        .then(function (data) {
-          const features: Feature<Geometry>[] = [];
-          data.list.forEach(function (report: { [x: string]: any; coord?: any; }) {
-            const feature = new Feature(
-              new Point(fromLonLat([report.lon, report.lat])),
-            );
-            feature.setProperties(report);
-            features.push(feature);
-          });
-          source.addFeatures(features);
-          map.getView().fit(source.getExtent());
-        });
-      };
+    // const windDataFetch = () => {
+    //   fetch('./api/dataset/wind.json')
+    //     .then(function (response) {
+    //       return response.json();
+    //     })
+    //     .then(function (data) {
+    //       const features: Feature<Geometry>[] = [];
+    //       data.forEach(function (report: { [x: string]: any; coord?: any; }) { // data.list
+    //         const feature = new Feature(
+    //           new Point(fromLonLat([report.longitude, report.latitude])),
+    //         );
+    //         feature.setProperties(report);
+    //         features.push(feature);
+    //       });
+    //       source.addFeatures(features);
+    //       map.getView().fit(source.getExtent());
+    //     });
+    //   };
 
     if (mapContainer.current) {
       map.setTarget(mapContainer.current);
     }
 
     setMapObject(map);
+    // map.getView().fit(source.getExtent());
 
     // on component unmount remove the map refrences to avoid unexpected behaviour
     return () => {
