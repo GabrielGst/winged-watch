@@ -40,7 +40,7 @@ export default async function BuildWindLayer() {
   
   // Update the source with fetched data
   async function getData() {
-    const res =  await fetch('wind-sample-2.json')
+    const res =  await fetch('wind-sample-1000.json')
     if (!res.ok) {
       console.log("Response not okay.")
       throw new Error('Network response was not ok');

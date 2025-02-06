@@ -1,5 +1,8 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+
+
+Comparison : test with https://earth.nullschool.net/fr/#2025/02/04/1600Z/wind/surface/level/orthographic=156.92,31.28,474/loc=-68.642,53.693
 ## Getting Started
 
 First, run the development server:

@@ -45,7 +45,7 @@ def retrieve_forecast(parameters, filename):
         # print(f"File time (converted): {file_time_converted}")
 
         if file_day - current_day < 1:
-            print(f"The weather dataset file time {file_time_converted} and current time {current_time} are on the same day. No download needed.")
+            print(f"Reponse [{file_day - current_day}]. The weather dataset file time {file_time_converted} and current time {current_time} are on the same day. No download needed.")
             
         else:
             print(f"The weather dataset file time {file_time_converted} and current time {current_time} are on different days. Proceeding with download.")
@@ -177,6 +177,11 @@ def process_forecast(filename, export=False):
         
         with open("./public/wind-sample-2.json", "w") as f:
             dfSamp2.to_json(f, orient="index")
+            
+        dfSamp3 = df.sample(5000)
+        
+        with open("./public/wind-sample-5000.json", "w") as f:
+            dfSamp3.to_json(f, orient="index")
         
         print("Wind data exported to ./public/wind.json")
         

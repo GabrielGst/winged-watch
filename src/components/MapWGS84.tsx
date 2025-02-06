@@ -65,24 +65,25 @@ const MapWGS84 = () => {
       if (res) {
         const results = (Object.values(res) as { [x: string]: number }[]);
         const result = results[0];
-        setText(result.longitude);
-        console.log(`text: ${result.longitude}`);
+        // setText(result.longitude);
+        // console.log(`text: ${result.longitude}`);
         
-        const features: Feature<Geometry>[] = [];
+        // const features: Feature<Geometry>[] = [];
         // const sourceBis = new VectorSource({});
 
         results.forEach(function (report) {
           if (report.longitude !== undefined && report.latitude !== undefined) {
-            const feature = new Feature({geometry: new Point([report.longitude, report.latitude])});
+            const feature = new Feature({geometry: new Point(fromLonLat([report.longitude, report.latitude], 'EPSG:4326'))});
             const geometry = feature.getGeometry();
 
             if (geometry) {
               feature.set("speed", report.speed);
               feature.set("deg", report.deg);
-              console.log(`Feature: ${feature.getKeys()}`);
-              console.log(`Feature: ${feature.get("speed")}`);
-              console.log(`Feature: ${feature.get("deg")}`);
-              features.push(feature);
+              // console.log(`Feature: ${feature.getKeys()}`);
+              // console.log(`Feature: ${feature.get("speed")}`);
+              // console.log(`Feature: ${feature.get("deg")}`);
+
+              // features.push(feature);
               source.addFeature(feature);
             } else {
               console.error('Feature geometry is undefined');
@@ -93,19 +94,19 @@ const MapWGS84 = () => {
           }
         });
 
-        console.log(`Features length: ${features.length}`);
-        console.log(`Source length: ${source.getFeatures().length}`);
-        console.log(`Source [0]: ${source.getFeatures()[0].getKeys()}`);
+        // console.log(`Features length: ${features.length}`);
+        // console.log(`Source length: ${source.getFeatures().length}`);
+        // console.log(`Source [0]: ${source.getFeatures()[0].getKeys()}`);
 
-        if (features.length > 0) {
-          // sourceBis.addFeatures(features);
+        // if (features.length > 0) {
+        //   // sourceBis.addFeatures(features);
 
-          // setSource(sourceBis);
+        //   // setSource(sourceBis);
           
-          // console.log(`Source length: ${source.getFeatures().length}`);
-        } else {
-          console.warn('No features created from results.');
-        }
+        //   // console.log(`Source length: ${source.getFeatures().length}`);
+        // } else {
+        //   console.warn('No features created from results.');
+        // }
       }
 
       // const res2  = await BuildWindLayer();
@@ -126,13 +127,6 @@ const MapWGS84 = () => {
 
     fetchData();
 
-  }, []);
-
-  useEffect(() => {
-    // const test = source.getFeatures()[0];
-    // console.log(`Test: ${test.get("longitude")}`);
-    // console.log(`Test: ${test.getProperties().longitude}`);
-
     const map = new Map({
       layers: [
         new TileLayer({
@@ -140,6 +134,7 @@ const MapWGS84 = () => {
         }),
         new VectorLayer({
           source: source,
+          // style: null,
           style: function (feature) {
             const angle = feature.get("deg")
             const scale = feature.get("speed") / 10
@@ -170,7 +165,52 @@ const MapWGS84 = () => {
       map.setTarget(undefined);
       // setMapObject(undefined);
     };
-  }, [text]);
+
+  }, []);
+
+  // useEffect(() => {
+    // const test = source.getFeatures()[0];
+    // console.log(`Test: ${test.get("longitude")}`);
+    // console.log(`Test: ${test.getProperties().longitude}`);
+
+    // const map = new Map({
+    //   layers: [
+    //     new TileLayer({
+    //       source: new OSM(),
+    //     }),
+    //     new VectorLayer({
+    //       source: source,
+    //       style: function (feature) {
+    //         const angle = feature.get("deg")
+    //         const scale = feature.get("speed")
+    //         shaft.setScale([1, scale]);
+    //         shaft.setRotation(angle);
+    //         head.setDisplacement([
+    //           0,
+    //           head.getRadius() / 2 + shaft.getRadius() * scale,
+    //         ]);
+    //         head.setRotation(angle);
+    //         return styles;
+    //       },
+    //     }),
+    //   ],
+    //   target: 'map',
+    //   view: new View({
+    //     projection: 'EPSG:4326',
+    //     center: [0, 0],
+    //     zoom: 2,
+    //   }),
+    // });
+
+    // // map.addLayer(layer);
+    // map.getView().fit(source.getExtent());
+
+    // // on component unmount remove the map refrences to avoid unexpected behaviour
+    // return () => {
+    //   map.setTarget(undefined);
+    //   // setMapObject(undefined);
+    // };
+  // }, [source]);
     
   // console.log(layer)
 

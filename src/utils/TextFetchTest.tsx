@@ -3,7 +3,7 @@ export default async function GetText() {
   
   async function getData() {
     // const url = "http://localhost:3000/test.txt";
-    const url = "http://localhost:3000/wind-sample-2.json";
+    const url = "http://localhost:3000/wind-sample-5000.json";
     console.log(url);
     try {
       const response = await fetch(url);
