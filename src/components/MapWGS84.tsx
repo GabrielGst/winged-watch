@@ -1,99 +1,138 @@
+"use client";
+
 // https://openlayers.org/en/latest/examples/reprojection-wgs84.html
 // https://openlayers.org/en/latest/examples/wind-arrows.html
 
-'use client';
-
-import { useEffect, useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import 'ol/ol.css';
 import Map from 'ol/Map.js';
 import OSM from 'ol/source/OSM.js';
 import TileLayer from 'ol/layer/Tile.js';
 import View from 'ol/View.js';
+import VectorLayer from 'ol/layer/Vector';
+// import { after } from 'next/server'
 
-
-// https://openlayers.org/en/latest/examples/wind-arrows.html
-
+// import { buildWindLayer } from "@/components/MapFetcher";
+import 'ol/ol.css';
 import Feature from 'ol/Feature.js';
 import Point from 'ol/geom/Point.js';
-import VectorLayer from 'ol/layer/Vector.js';
 import VectorSource from 'ol/source/Vector.js';
 import {Fill, RegularShape, Stroke, Style} from 'ol/style.js';
+import GeoJSON from 'ol/format/GeoJSON.js';
 import {fromLonLat} from 'ol/proj.js';
 import { Geometry } from 'ol/geom';
 
+import GetText from '@/utils/TextFetchTest'
+import BuildWindLayer from '@/utils/MapFetcher';
+import { use } from "react";
 
+// { setMapObject }: { setMapObject: (map: Map | undefined) => void }
+// { windLayer }: {windLayer: VectorLayer}
+const MapWGS84 = () => {
+  const [text, setText] = useState<number>(0);
+  const [layer, setLayer] = useState<VectorLayer>(new VectorLayer());
+  // const [source, setSource] = useState<VectorSource>(new VectorSource());
+  const source = new VectorSource({});
 
-const shaft = new RegularShape({
-  points: 2,
-  radius: 5,
-  stroke: new Stroke({
-    width: 2,
-    color: 'black',
-  }),
-  rotateWithView: true,
-});
-
-const head = new RegularShape({
-  points: 3,
-  radius: 5,
-  fill: new Fill({
-    color: 'black',
-  }),
-  rotateWithView: true,
-});
-
-const styles = [new Style({image: shaft}), new Style({image: head})];
-
-// const source = new VectorSource({
-//   attributions:
-//     'Weather data by ecmwf',
-// });
-
-
-// This function gets called at build time on server-side.
-// It won't be called on client-side, so you can even do
-// direct database queries.
-export async function getStaticProps() {
-  const source = new VectorSource({
-    attributions:
-      'Weather data by ecmwf',
+  // Define styles
+  const shaft = new RegularShape({
+    points: 2,
+    radius: 5,
+    stroke: new Stroke({
+      width: 2,
+      color: 'black',
+    }),
+    rotateWithView: true,
   });
-
-  // Call an external API endpoint to get posts.
-  // You can use any data fetching library
-  const res = await fetch('./api/dataset/wind.json')
-  const posts = await res.json()
-  // console.log("lol")
-  const features: Feature<Geometry>[] = [];
-
-  posts.forEach(function (report: { [x: string]: any; coord?: any; }) { // data.list
-    const feature = new Feature(
-      new Point(fromLonLat([report.longitude, report.latitude])),
-    );
-    feature.setProperties(report);
-    features.push(feature);
+    
+  const head = new RegularShape({
+    points: 3,
+    radius: 5,
+    fill: new Fill({
+      color: 'black',
+    }),
+    rotateWithView: true,
   });
+    
+  const styles = [new Style({image: shaft}), new Style({image: head})];
+  
 
-  source.addFeatures(features);
-  // console.log(source.getExtent())
- 
-  // By returning { props: { posts } }, the Blog component
-  // will receive `posts` as a prop at build time
-  return {
-    props: {
-      source,
-    },
-  }
-}
-
-
-
-const MapWGS84 = ({ setMapObject, source }: { setMapObject: (map: Map | undefined) => void, source: VectorSource }) => {
-  const mapContainer = useRef<HTMLDivElement | null>(null);
-
-
-  // on component mount create the map and set the map references to the state
   useEffect(() => {
+
+    async function fetchData() {
+      const res = await GetText();
+
+      if (res) {
+        const results = (Object.values(res) as { [x: string]: number }[]);
+        const result = results[0];
+        setText(result.longitude);
+        console.log(`text: ${result.longitude}`);
+        
+        const features: Feature<Geometry>[] = [];
+        // const sourceBis = new VectorSource({});
+
+        results.forEach(function (report) {
+          if (report.longitude !== undefined && report.latitude !== undefined) {
+            const feature = new Feature({geometry: new Point([report.longitude, report.latitude])});
+            const geometry = feature.getGeometry();
+
+            if (geometry) {
+              feature.set("speed", report.speed);
+              feature.set("deg", report.deg);
+              console.log(`Feature: ${feature.getKeys()}`);
+              console.log(`Feature: ${feature.get("speed")}`);
+              console.log(`Feature: ${feature.get("deg")}`);
+              features.push(feature);
+              source.addFeature(feature);
+            } else {
+              console.error('Feature geometry is undefined');
+            }
+            
+          } else {
+            console.error('Invalid report data:', report);
+          }
+        });
+
+        console.log(`Features length: ${features.length}`);
+        console.log(`Source length: ${source.getFeatures().length}`);
+        console.log(`Source [0]: ${source.getFeatures()[0].getKeys()}`);
+
+        if (features.length > 0) {
+          // sourceBis.addFeatures(features);
+
+          // setSource(sourceBis);
+          
+          // console.log(`Source length: ${source.getFeatures().length}`);
+        } else {
+          console.warn('No features created from results.');
+        }
+      }
+
+      // const res2  = await BuildWindLayer();
+
+      // if (res2) {
+      //   setLayer(res2.vLayer);
+      //   setSource(res2.source);
+      //   console.log(`Fetched layer: ${res2.vLayer}`);
+      //   console.log(`Fetched source: ${res2.source}`);
+      //   const features = res2.source.getFeatures();
+      //   const feature = features[0];
+
+      //   console.log('Feature 0:', feature);
+      // }
+
+
+    }
+
+    fetchData();
+
+  }, []);
+
+  useEffect(() => {
+    // const test = source.getFeatures()[0];
+    // console.log(`Test: ${test.get("longitude")}`);
+    // console.log(`Test: ${test.getProperties().longitude}`);
+
     const map = new Map({
       layers: [
         new TileLayer({
@@ -102,10 +141,6 @@ const MapWGS84 = ({ setMapObject, source }: { setMapObject: (map: Map | undefine
         new VectorLayer({
           source: source,
           style: function (feature) {
-            // const wind = feature.get('wind');
-            // rotate arrow away from wind origin
-            // const angle = ((wind.deg - 180) * Math.PI) / 180;
-            // const scale = wind.speed / 10;
             const angle = feature.get("deg")
             const scale = feature.get("speed") / 10
             shaft.setScale([1, scale]);
@@ -119,7 +154,7 @@ const MapWGS84 = ({ setMapObject, source }: { setMapObject: (map: Map | undefine
           },
         }),
       ],
-      // target: 'map',
+      target: 'map',
       view: new View({
         projection: 'EPSG:4326',
         center: [0, 0],
@@ -127,42 +162,20 @@ const MapWGS84 = ({ setMapObject, source }: { setMapObject: (map: Map | undefine
       }),
     });
 
-    // const windDataFetch = () => {
-    //   fetch('./api/dataset/wind.json')
-    //     .then(function (response) {
-    //       return response.json();
-    //     })
-    //     .then(function (data) {
-    //       const features: Feature<Geometry>[] = [];
-    //       data.forEach(function (report: { [x: string]: any; coord?: any; }) { // data.list
-    //         const feature = new Feature(
-    //           new Point(fromLonLat([report.longitude, report.latitude])),
-    //         );
-    //         feature.setProperties(report);
-    //         features.push(feature);
-    //       });
-    //       source.addFeatures(features);
-    //       map.getView().fit(source.getExtent());
-    //     });
-    //   };
-
-    if (mapContainer.current) {
-      map.setTarget(mapContainer.current);
-    }
-
-    setMapObject(map);
+    // map.addLayer(layer);
     // map.getView().fit(source.getExtent());
 
     // on component unmount remove the map refrences to avoid unexpected behaviour
     return () => {
       map.setTarget(undefined);
-      setMapObject(undefined);
+      // setMapObject(undefined);
     };
-  }, []);
-  
+  }, [text]);
+    
+  // console.log(layer)
 
   return (
-    <div ref={mapContainer} className="w-full h-full"></div>
+    <div id='map' className="w-full h-full"></div>
   );
 };
 

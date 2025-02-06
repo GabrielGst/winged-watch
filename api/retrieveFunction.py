@@ -23,7 +23,7 @@ def retrieve_forecast(parameters, filename):
     mod = False
     
     # Create the dataset directory if it doesn't exist
-    dataset_dir = "./api/dataset/"
+    dataset_dir = "./public/"
     
     if not os.path.exists(dataset_dir):
         os.makedirs(dataset_dir)
@@ -142,6 +142,7 @@ def process_forecast(filename, export=False):
         export (bool, optional): Boolean to export data to .json. Defaults to False.
     """
     
+    print("Proceeding with grib to json export.")
     ds = xr.open_dataset(filename, engine="cfgrib", decode_times=False) # To avoid datetime incompatibility use decode_times=False kwarg in xarray.open_dataset
 
     u10 = ds["u10"]
@@ -164,10 +165,20 @@ def process_forecast(filename, export=False):
         df["speed"] = (df["u10"]**2 + df["v10"]**2)**0.5
         df["deg"] = (180 + np.rad2deg(np.atan2(df["u10"], df["v10"]))) % 360
         
-        with open("./api/dataset/wind.json", "w") as f:
+        with open("./public/wind.json", "w") as f:
             df.to_json(f, orient="index")
         
-        print("Wind data exported to ./api/dataset/wind.json")
+        dfSamp1000 = df.sample(1000)
+        
+        with open("./public/wind-sample-1000.json", "w") as f:
+            dfSamp1000.to_json(f, orient="index")
+            
+        dfSamp2 = df.sample(2)
+        
+        with open("./public/wind-sample-2.json", "w") as f:
+            dfSamp2.to_json(f, orient="index")
+        
+        print("Wind data exported to ./public/wind.json")
         
     else:
         print("Wind data not exported.")
@@ -179,7 +190,7 @@ def main():
     filename = 'medium-wind-10m.grib'
     
     filename, exp = retrieve_forecast(parameters, filename)
-    process_forecast(filename, export=exp) # set to true for debugging
+    process_forecast(filename, export=True) # set to true for debugging
 
 
 if __name__ == "__main__":
