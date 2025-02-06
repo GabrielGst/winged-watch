@@ -45,4 +45,4 @@ next-env.d.ts
 .grib2
 .grib
 /api/dataset
-/public.json
+/public/*.json
