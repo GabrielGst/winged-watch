@@ -5,9 +5,13 @@ app = Flask(__name__)
 CORS(app) # Without CORS configured, any requests involving data mutation, such as POST, PUT, PATCH, and DELETE, would be blocked
 
 
-# @app.route("/api/todos", methods=["GET"])
-# def get_all_todo_items():
-#     return todos
+@app.route("/api/course", methods=["GET"])
+def get_all_todo_items():
+  return "Hello world !"
+
+@app.route("/api/healthchecker", methods=["GET"])
+def healthchecker():
+  return {"status": "success", "message": "Integrate Flask Framework with Next.js"}
 
 
 # @app.route("/api/todos/<int:todo_id>", methods=["GET"])
