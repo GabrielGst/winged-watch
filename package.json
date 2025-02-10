@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "flask-dev": ".venv\\Scripts\\activate.bat && pip3 install -r requirements.txt && python -m flask --app api/index run -p 8000 --reload",
+    "flask-install": ".venv\\Scripts\\activate.bat && pip3 install -r requirements.txt",
+    "flask-dev": ".venv\\Scripts\\activate.bat && python -m flask --app api/index run -p 8000 --reload",
     "next-dev": "next dev",
     "dev": "concurrently \"set NODE_OPTIONS=--inspect && pnpm run next-dev --turbopack\" \"pnpm run flask-dev\"",
     "build": "next build",
@@ -20,6 +21,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@tailwindcss/forms": "^0.5.10",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
