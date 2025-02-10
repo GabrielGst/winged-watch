@@ -1,47 +1,39 @@
-# winged-watch
-
-Computes the best sailing course for a sail boat according to winds, ocean currents and the boat's draft.
-
-This project is led by Gabriel Gostiaux, student in engineering at Institut of Optics in Palaiseau, FRANCE.
-
-## Description
-
-The application will work from data provided by
-
-1) for bathymetric data : GEBCO <https://www.gebco.net/data_and_products/>
-2) for wind predictions : AROME model from meteo-france <https://meteo.data.gouv.fr/datasets/65bd1247a6238f16e864fa80>
-3) for ocean currents : AROME model from meteo-france <https://meteo.data.gouv.fr/datasets/65bd19226c4e3fcbf4948f99> (to check)
-4) for tidal heightd : AROME model from meteo-france <https://meteo.data.gouv.fr/datasets/65bd17b9775b5222832d67a4>
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 
-## Specs
 
-The goal of the app is to computes an optimal course for a sailing boat according to natural constraints (wind, tidal and ocean currents) and based on navigation rules.
+Comparison : test with https://earth.nullschool.net/fr/#2025/02/04/1600Z/wind/surface/level/orthographic=156.92,31.28,474/loc=-68.642,53.693
+## Getting Started
 
-1) the app should use (and show) the bathymetric map at different scales,
-2) the app should use (and show) the wind forecast,
-3) the app should use (and show) the ocean currents forecast,
-4) the app should use (and show) the tidal heights forecast,
-5) the app should use (and show) basics marine beacons,
-6) the app should computes (and show) the optimal sailing course,
-7) the app should provide a list of timed directions to follow the computed course.
+First, run the development server:
 
-## Conception
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-The vizualization side will be designed later on. For the computation side, a first component diagram has been designed to illustrate how the app will respond to the specifications 2, 3, 4, 5, 7 (see below).
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-![alt text](./design/Pictures/app.svg)
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-## Work program
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-The estimate work program is presented below. It needs to be revised regularly.
+## Learn More
 
-![alt text](./design/Pictures/gantt.svg)
+To learn more about Next.js, take a look at the following resources:
 
-## Testing
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-Testing of fetching functions will include integrity testing through data occurency checking with the source.
-Testing of computation will be compared with analytical computation.
-Testing of communication between frontend and backend will be designed with simple messages and print functions.
-Timed directions will be confronted with the plotted optimal course.
-Tidal heights, ocean currents and wind forecast can be confronted with classic analytic maps, observation and official forecast at reference harbors, and direct computation.
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
