@@ -1,5 +1,4 @@
 import MapWGS84 from "@/components/MapWGS84";
-import Header from "@/components/Header";
 
 // import { buildWindLayer } from "@/components/MapFetcher";
 
