@@ -84,7 +84,10 @@ def test():
   
   with open("./public/course.json", "w") as json_file:
     json.dump(result_dict, json_file, indent=4)
-
+    
+    
+def closest_index(lst, target):
+  return min(range(len(lst)), key=lambda i: abs(lst[i] - target))
   
 def main(start, end):
   """Generates the course from start to end and saves it to a json file
@@ -96,6 +99,9 @@ def main(start, end):
   log("Generating course")
   
   degArray, speedArray, latList, lonList = createGrid("./public/wind-sample-1000.json")
+  start = (closest_index(latList, start[1]), closest_index(lonList, start[0]))
+  end = (closest_index(latList, end[1]), closest_index(lonList, end[0]))
+  
   path = computeCourse(start, end, speedArray, speedArray.shape[0])
   
   result_dict = {i: {'latitude': latList[x], 'longitude': lonList[y]} for i, (x, y) in enumerate(path)}
