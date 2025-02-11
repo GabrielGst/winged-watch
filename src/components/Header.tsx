@@ -42,6 +42,14 @@ export default function Header() {
               </Link>
             </li>
 
+            <li>
+              <Link href="/trips">
+                <span className="text-gray-500 transition hover:text-gray-500/75">
+                  Trips
+                </span>
+              </Link>
+            </li>
+
 
           </ul>
         </nav>
