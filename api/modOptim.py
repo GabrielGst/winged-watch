@@ -7,17 +7,16 @@ Import data functions and computing functions
 
 
 import numpy as np
-import heapq
 import json
 import pandas as pd
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 import json
 
-from boatCourseHamza import main as computeCourse
-from utils import log
+from modOptimUtils import main as computeCourse
+from modUtils import log
 
-def createGrid(filename: str):
+def createGrid(filename: str, debug=False):
   """Creates the wind speed and wind degree arrays for course computation from jsonifyed data
 
   Args:
@@ -47,11 +46,14 @@ def createGrid(filename: str):
     j = lon.index(row.longitude)
     degArray[i][j] = row.deg
     speedArray[i][j] = row.speed
-    
-  # plt.figure()
-  # plt.imshow(speedArray, cmap='hot', interpolation='nearest')
-  # plt.title('Wind speed')
-  # plt.show()
+  
+  log("Grid created.")
+  
+  if debug:
+    plt.figure()
+    plt.imshow(degArray, cmap='hot', interpolation='nearest')
+    plt.title('Wind degree')
+    plt.savefig(f"./public/degArray_{filename}.png")
   
   return degArray, speedArray, lat, lon
 
@@ -106,10 +108,12 @@ def main(start, end):
   
   result_dict = {i: {'latitude': latList[x], 'longitude': lonList[y]} for i, (x, y) in enumerate(path)}
   
-  json_string = json.dumps(result_dict, indent=4)
+  # json_string = json.dumps(result_dict, indent=4)
   
   with open("./public/course.json", "w") as json_file:
     json.dump(result_dict, json_file, indent=4)
+  
+  log(f"Course generated to ./public/course.json.")
 
   
   

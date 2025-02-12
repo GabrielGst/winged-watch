@@ -9,7 +9,7 @@ import shutil
 from datetime import datetime
 import numpy as np
 
-from utils import log
+from modUtils import log
 
 def retrieve_forecast(parameters, filename):
   """Checks if retrieve is needed and downloads the forecast file if needed.
@@ -21,7 +21,7 @@ def retrieve_forecast(parameters, filename):
   Returns:
       str: filename of the forecast data
   """
-  
+  log("Proceeding with forecast retrieval.")
   # Define .grib modifier id
   mod = False
   

@@ -6,7 +6,7 @@ Utility functions
 """
 from datetime import datetime
 
-def log(message, filename="./api/python-logs.txt"):
+def log(message, filename="./api/python-logs.txt", debug=False):
   """Logs a message to the console with a timestamp.
 
   Args:
@@ -16,5 +16,6 @@ def log(message, filename="./api/python-logs.txt"):
   # Open a file in write mode ('w'), or append mode ('a')
   with open(filename, "a") as file:
     file.write(f"[{datetime.now()}] {message}\n")  # Write the string to the file
-    
-  print(f"[{datetime.now()}] {message}")
+  
+  if debug:
+    print(f"[{datetime.now()}] {message}")
