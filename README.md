@@ -157,7 +157,7 @@ Everyone is welcome to contribute to this project. Feel free to open an issue if
 
 #### Primary
 
-# 172E73
+#172E73
 
 #142559
 
@@ -179,7 +179,7 @@ Everyone is welcome to contribute to this project. Feel free to open an issue if
 
 #F2F2F2
 
-### License
+## License
 
 Licensed under the MIT License, Copyright © 2024
 
