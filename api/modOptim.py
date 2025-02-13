@@ -53,7 +53,7 @@ def createGrid(filename: str, debug=False):
     plt.figure()
     plt.imshow(degArray, cmap='hot', interpolation='nearest')
     plt.title('Wind degree')
-    plt.savefig(f"./public/degArray_{filename}.png")
+    plt.savefig(f"./api/Tests/degArray_{filename}.png")
   
   return degArray, speedArray, lat, lon
 

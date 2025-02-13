@@ -10,11 +10,11 @@
 <!-- ![version](https://img.shields.io/badge/version-0.0.1-blueviolet) -->
 <div style="flex" align="center">
   <img src="https://img.shields.io/badge/version-1.0.0-blueviolet" alt="version badge">
+  <img src="https://img.shields.io/badge/testing-in%20progress-orange" alt="Testing Status">
   <img src="https://img.shields.io/badge/development-in%20progress-orange" alt="Development Status">
   <img src="https://img.shields.io/badge/maintained-yes-brightgreen.svg" alt="Maintenance Status">
   <img src="https://img.shields.io/badge/launched-no-red.svg" alt="Launch Status">
   <img src="https://img.shields.io/badge/license-MIT-blue" alt="License">
-
 </div>
 
 <!-- ![development](https://img.shields.io/badge/development-in%20progress-orange)
