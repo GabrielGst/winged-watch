@@ -6,7 +6,6 @@
 <h4 align="center">Web app for computing optimized wind-based sailing courses.</h4>
 
 <!-- <h1 align="center"> </h1> -->
----
 
 <!-- ![version](https://img.shields.io/badge/version-0.0.1-blueviolet) -->
 <div style="flex" align="center">
@@ -24,8 +23,6 @@
 ![License](https://img.shields.io/badge/license-MIT-blue) -->
 
 ## Introduction
-
----
 
 Winged Watch is a student project that aims to provide real-time meteorological forecasts and sailing course optimization. Please notice that this project is experimental and should not be used in practice by sailor. Our goal is to deliver a robust and scalable solution that meets the needs of amateur sailors, and in the long-tern, modern shipping enterprises that would want to benchmark wind-propulsion solutions on their ships.
 
@@ -63,8 +60,6 @@ The app allow the user to display the wind forecast, select start and end points
 ```
 
 ## Getting Started
-
----
 
 ### Requirements
 
@@ -115,7 +110,6 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 ## Debugging & Testing
 
----
 
 All unit tests are located alongside the source code in the same directory, making them easier to find. Tests arer only available for the Python server. You can run the tests with the following command:
 
@@ -128,8 +122,6 @@ python -m unittest [function-to-test].py
 
 ## Learn More
 
----
-
 To learn more about Next.js, take a look at the following resources:
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
@@ -139,8 +131,6 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 ## Deploy on Vercel
 
----
-
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
@@ -148,13 +138,9 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## Deploy to production
 
----
-
 For vps users only. Log into your vps then clone the repo. Then follow the _Getting Started_ section to install the server, and checks firewall rules to open your selected ports.
 
 ## Contributions
-
----
 
 Everyone is welcome to contribute to this project. Feel free to open an issue if you have any questions or find a bug. Totally open to suggestions and improvements.
 
@@ -192,8 +178,6 @@ Everyone is welcome to contribute to this project. Feel free to open an issue if
 #C9EBF2
 
 #F2F2F2
-
----
 
 ### License
 
