@@ -10,9 +10,6 @@ import OSM from 'ol/source/OSM.js';
 import TileLayer from 'ol/layer/Tile.js';
 import View from 'ol/View.js';
 import VectorLayer from 'ol/layer/Vector';
-// import { after } from 'next/server'
-
-// import { buildWindLayer } from "@/components/MapFetcher";
 import 'ol/ol.css';
 import Feature from 'ol/Feature.js';
 import Point from 'ol/geom/Point.js';
@@ -21,18 +18,56 @@ import {Fill, RegularShape, Stroke, Style} from 'ol/style.js';
 import GeoJSON from 'ol/format/GeoJSON.js';
 import {fromLonLat} from 'ol/proj.js';
 import { Geometry } from 'ol/geom';
+import { transform } from 'ol/proj';
+import Draw from 'ol/interaction/Draw.js';
 
 import GetText from '@/utils/TextFetchTest'
+import FetchCourse from '@/utils/CourseFetch';
 import BuildWindLayer from '@/utils/MapFetcher';
 import { use } from "react";
 
-// { setMapObject }: { setMapObject: (map: Map | undefined) => void }
-// { windLayer }: {windLayer: VectorLayer}
 const MapWGS84 = () => {
+  const [serverResponse, setServerResponse] = useState<string | null>(null);
   const [text, setText] = useState<number>(0);
   const [layer, setLayer] = useState<VectorLayer>(new VectorLayer());
-  // const [source, setSource] = useState<VectorSource>(new VectorSource());
+  const [path, setPath] = useState<number[][]>([]);
+  const [map, setMap] = useState<Map>();
+
+  function handleRegister() {
+    sendDataToFlask(path);
+  }
+
+  const sendDataToFlask = (dataToSend: number[][]) => {
+    fetch("http://localhost:3000/api/receive-data", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ message: dataToSend , process: true}),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        console.log("Server response:", result);
+        setServerResponse(result.message);
+      })
+      .catch((error) => {
+        console.error("Error sending data:", error);
+      });
+  };
+
   const source = new VectorSource({});
+
+  const sourceTrip = new VectorSource({wrapX: false});
+
+  const vectorTrip = new VectorLayer({
+    source: sourceTrip,
+  });
+
+  const sourceCourse = new VectorSource({wrapX: false});
+
+  const vectorCourse = new VectorLayer({
+    source: sourceCourse,
+  });
 
   // Define styles
   const shaft = new RegularShape({
@@ -157,6 +192,8 @@ const MapWGS84 = () => {
       }),
     });
 
+    setMap(map);
+
     // map.addLayer(layer);
     // map.getView().fit(source.getExtent());
 
@@ -167,6 +204,107 @@ const MapWGS84 = () => {
     };
 
   }, []);
+
+  let draw: Draw;
+
+  function addTripPoint() {
+     // global so we can remove it later
+    function addInteraction() {
+      draw = new Draw({
+        source: sourceTrip,
+        type: "Point",
+      });
+      if (map)
+      map.addInteraction(draw);
+    };
+    addInteraction();
+  }
+
+  function handleUndo() {
+    draw.removeLastPoint();
+    path.pop();
+  }
+
+  addTripPoint();
+  map?.addLayer(vectorTrip);
+
+  if (map) {
+    map.on('click', function(evt){
+      // console.log(transform(evt.coordinate, 'EPSG:4326', 'EPSG:4326'));
+      setPath([...path, transform(evt.coordinate, 'EPSG:4326', 'EPSG:4326')]);
+  });
+  }
+
+  useEffect(() => {
+    console.log(path);
+  }, [path]);
+  
+  function handleShow() {
+    async function fetchData() {
+      const res = await FetchCourse("course.json");
+
+      if (res) {
+        const results = (Object.values(res) as { [x: string]: number }[]);
+        const result = results[0];
+        // setText(result.longitude);
+        // console.log(`text: ${result.longitude}`);
+        
+        // const features: Feature<Geometry>[] = [];
+        // const sourceBis = new VectorSource({});
+
+        results.forEach(function (report) {
+          if (report.longitude !== undefined && report.latitude !== undefined) {
+            const feature = new Feature({geometry: new Point(fromLonLat([report.longitude, report.latitude], 'EPSG:4326'))});
+            const geometry = feature.getGeometry();
+
+            if (geometry) {
+
+              sourceCourse.addFeature(feature);
+            } else {
+              console.error('Feature geometry is undefined');
+            }
+            
+          } else {
+            console.error('Invalid report data:', report);
+          }
+        });
+
+        // console.log(`Features length: ${features.length}`);
+        // console.log(`Source length: ${source.getFeatures().length}`);
+        // console.log(`Source [0]: ${source.getFeatures()[0].getKeys()}`);
+
+        // if (features.length > 0) {
+        //   // sourceBis.addFeatures(features);
+
+        //   // setSource(sourceBis);
+          
+        //   // console.log(`Source length: ${source.getFeatures().length}`);
+        // } else {
+        //   console.warn('No features created from results.');
+        // }
+      }
+
+      // const res2  = await BuildWindLayer();
+
+      // if (res2) {
+      //   setLayer(res2.vLayer);
+      //   setSource(res2.source);
+      //   console.log(`Fetched layer: ${res2.vLayer}`);
+      //   console.log(`Fetched source: ${res2.source}`);
+      //   const features = res2.source.getFeatures();
+      //   const feature = features[0];
+
+      //   console.log('Feature 0:', feature);
+      // }
+
+
+    }
+
+    fetchData();
+  }
+  
+  map?.addLayer(vectorCourse);
+
 
   // useEffect(() => {
     // const test = source.getFeatures()[0];
@@ -215,7 +353,16 @@ const MapWGS84 = () => {
   // console.log(layer)
 
   return (
-    <div id='map' className="w-full h-full"></div>
+    // border-4 border-black
+    <div className="grid grid-rows-[10px_1fr_10px] items-center justify-items-center min-h-screen p-8 pb-20 gap-8 sm:p-16 font-[family-name:var(--font-geist-sans)]">
+      <p className="text-2xl font-bold ">Map</p>
+      <div id='map' className="w-full h-full"></div>
+      <div className='flex flex-row gap-6'>
+        {/* <button id='undo' className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'onClick={ handleUndo }>Undo</button> */}
+        <button id='send' className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={ handleRegister }>Register trip and compute course</button>
+        <button id='show' className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={ handleShow }>Show course</button>
+      </div>
+    </div>
   );
 };
 
