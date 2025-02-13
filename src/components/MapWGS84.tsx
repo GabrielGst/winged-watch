@@ -352,16 +352,16 @@ const MapWGS84 = () => {
   // console.log(layer)
 
   return (
-
-    <div className="grid grid-rows-[20px_1fr_10px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-    <p className="text-2xl font-bold">Map</p>
-    <div id='map' className="w-full h-full"></div>
-    <div className='flex flex-row'>
-      <button id='undo' className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'onClick={ handleUndo }>Undo</button>
-      <button id='send' className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={ handleRegister }>Register trip and compute course</button>
-      <button id='show' className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={ handleShow }>Show course</button>
+    // border-4 border-black
+    <div className="grid grid-rows-[10px_1fr_10px] items-center justify-items-center min-h-screen p-8 pb-20 gap-8 sm:p-16 font-[family-name:var(--font-geist-sans)]">
+      <p className="text-2xl font-bold ">Map</p>
+      <div id='map' className="w-full h-full"></div>
+      <div className='flex flex-row gap-6'>
+        <button id='undo' className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'onClick={ handleUndo }>Undo</button>
+        <button id='send' className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={ handleRegister }>Register trip and compute course</button>
+        <button id='show' className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={ handleShow }>Show course</button>
+      </div>
     </div>
-  </div>
   );
 };
 

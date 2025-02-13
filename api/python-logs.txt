@@ -19,3 +19,9 @@
 [2025-02-13 10:29:29.188006] Response [0]. The weather dataset file time 2025-02-13 01:00:00 and current time 2025-02-13 10:29:29.188006 are on the same day. No download needed.
 [2025-02-13 10:29:29.188006] Proceeding with grib to json export.
 [2025-02-13 10:29:29.215140] Wind data not exported.
+[2025-02-13 10:59:07.907678] Processing to daily retrieve.
+[2025-02-13 10:59:07.907678] Retrieving and processing forecast data. Export: False
+[2025-02-13 10:59:07.915840] Proceeding with forecast retrieval.
+[2025-02-13 10:59:09.727489] Response [0]. The weather dataset file time 2025-02-13 01:00:00 and current time 2025-02-13 10:59:09.727489 are on the same day. No download needed.
+[2025-02-13 10:59:09.727489] Proceeding with grib to json export.
+[2025-02-13 10:59:09.753532] Wind data not exported.
