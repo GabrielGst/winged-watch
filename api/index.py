@@ -4,6 +4,7 @@ from multiprocessing import Process
 from flask_cors import CORS
 from apscheduler.schedulers.background import BackgroundScheduler
 import atexit
+from datetime import datetime
 
 from modUtils import log
 import modOptim as optim
@@ -23,13 +24,8 @@ def computeCourse(start, end):
     log({'status': 'Failed', 'error': str(e)})
 
 
-
 app = Flask(__name__)
 CORS(app) # Without CORS configured, any requests involving data mutation, such as POST, PUT, PATCH, and DELETE, would be blocked
-
-scheduler = BackgroundScheduler()
-scheduler.add_job(func=dailyForecast, trigger="interval", days=1)
-scheduler.start()
 
 @app.route("/api/healthchecker", methods=["GET"])
 def healthchecker():
@@ -51,9 +47,12 @@ def receive_data():
   
   return jsonify({'message': "Data received successfully!", 'status': 'Processing started'}), 200
 
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=dailyForecast, trigger="interval", days=1, start_date=datetime.now())
+scheduler.start()
+
 # Ensure scheduler stops when the app exits
 atexit.register(lambda: scheduler.shutdown())
-
 
 if __name__ == "__main__":
   app.run(debug=True)
