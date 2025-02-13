@@ -219,6 +219,7 @@ const MapWGS84 = () => {
     };
     addInteraction();
   }
+
   function handleUndo() {
     draw.removeLastPoint();
     path.pop();
@@ -357,7 +358,7 @@ const MapWGS84 = () => {
       <p className="text-2xl font-bold ">Map</p>
       <div id='map' className="w-full h-full"></div>
       <div className='flex flex-row gap-6'>
-        <button id='undo' className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'onClick={ handleUndo }>Undo</button>
+        {/* <button id='undo' className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'onClick={ handleUndo }>Undo</button> */}
         <button id='send' className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={ handleRegister }>Register trip and compute course</button>
         <button id='show' className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={ handleShow }>Show course</button>
       </div>
