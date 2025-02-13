@@ -135,6 +135,7 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
+
 ## Deploy to production
 
 For vps users only. Log into your vps then clone the repo. Then follow the _Getting Started_ section to install the server, and checks firewall rules to open your selected ports.
